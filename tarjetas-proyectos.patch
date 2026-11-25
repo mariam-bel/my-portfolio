@@ -1,0 +1,143 @@
+diff --git a/app/Portfolio.tsx b/app/Portfolio.tsx
+index b768dde..01c61de 100644
+--- a/app/Portfolio.tsx
++++ b/app/Portfolio.tsx
+@@ -1,4 +1,5 @@
+ import RouteMap from "./RouteMap";
++import ProjectCards from "./ProjectCards";
+ import { projects } from "../data/projects";
+ 
+ export default function Portfolio() {
+@@ -52,28 +53,7 @@ export default function Portfolio() {
+ 
+         <section id="proyectos">
+           <h2>Proyectos</h2>
+-          <div>
+-            {projects.map((p) => (
+-              <article className="proj" key={p.titulo}>
+-                <div className="meta">
+-                  {p.tipo}
+-                  {p.estado && <><br />{p.estado}</>}
+-                </div>
+-                <div>
+-                  <h3>{p.titulo}</h3>
+-                  <p>{p.texto}</p>
+-                  <ul className="tags">
+-                    {p.tecnologias.map((t) => <li key={t}>{t}</li>)}
+-                  </ul>
+-                  {p.enlace && (
+-                    <p style={{ marginTop: ".85rem" }}>
+-                      <a className="link" href={p.enlace}>{p.enlaceTexto ?? "Ver proyecto"}</a>
+-                    </p>
+-                  )}
+-                </div>
+-              </article>
+-            ))}
+-          </div>
++          <ProjectCards projects={projects} />
+         </section>
+ 
+         <section id="experiencia">
+diff --git a/app/ProjectCards.css b/app/ProjectCards.css
+new file mode 100644
+index 0000000..78cd3e4
+--- /dev/null
++++ b/app/ProjectCards.css
+@@ -0,0 +1,24 @@
++.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 1.5rem}
++.chip{font:inherit;font-size:.95rem;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:2rem;padding:.25rem .85rem;cursor:pointer}
++.chip:hover{border-color:var(--accent)}
++.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
++.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(16.5rem,1fr));gap:1rem;align-items:start}
++.card{border:1px solid var(--line);border-radius:.6rem;padding:1.1rem 1.1rem 1rem;transition:border-color .2s,transform .2s,box-shadow .2s}
++.card:hover{border-color:var(--accent);transform:translateY(-2px)}
++.card.open{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
++.card-head{all:unset;box-sizing:border-box;display:grid;grid-template-columns:1fr auto;gap:.15rem .75rem;width:100%;cursor:pointer}
++.card-head:focus-visible{outline:3px solid var(--accent);outline-offset:6px;border-radius:.3rem}
++.card-meta,.card-status{color:var(--muted);font-size:.9rem;grid-column:1}
++.card-title{grid-column:1;font:700 1.2rem/1.25 var(--head);margin:.2rem 0 .75rem}
++.chev{grid-column:2;grid-row:1 / span 3;align-self:center;width:.6rem;height:.6rem;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .25s}
++.card.open .chev{transform:rotate(-135deg)}
++.card-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
++.card.open .card-body{grid-template-rows:1fr}
++.card-inner{overflow:hidden;visibility:hidden;transition:visibility .3s}
++.card.open .card-inner{visibility:visible}
++.card-inner p{margin:.9rem 0 .6rem}
++.card .link{font-weight:500}
++@media (prefers-reduced-motion:reduce){
++  .card,.chev,.card-body,.card-inner{transition:none}
++  .card:hover{transform:none}
++}
+diff --git a/app/ProjectCards.tsx b/app/ProjectCards.tsx
+new file mode 100644
+index 0000000..6d7676d
+--- /dev/null
++++ b/app/ProjectCards.tsx
+@@ -0,0 +1,67 @@
++"use client";
++import { useMemo, useState } from "react";
++import type { Project } from "../data/projects";
++import "./ProjectCards.css";
++
++export default function ProjectCards({ projects }: { projects: Project[] }) {
++  const techs = useMemo(
++    () => Array.from(new Set(projects.flatMap((p) => p.tecnologias))),
++    [projects]
++  );
++  const [filter, setFilter] = useState<string | null>(null);
++  const [open, setOpen] = useState<string | null>(null);
++  const shown = filter ? projects.filter((p) => p.tecnologias.includes(filter)) : projects;
++
++  return (
++    <>
++      <div className="chips" role="group" aria-label="Filtrar por tecnología">
++        <button className="chip" aria-pressed={filter === null} onClick={() => { setFilter(null); setOpen(null); }}>
++          Todos
++        </button>
++        {techs.map((t) => (
++          <button
++            key={t}
++            className="chip"
++            aria-pressed={filter === t}
++            onClick={() => { setFilter(filter === t ? null : t); setOpen(null); }}
++          >
++            {t}
++          </button>
++        ))}
++      </div>
++
++      <div className="cards">
++        {shown.map((p) => {
++          const isOpen = open === p.titulo;
++          const id = "card-" + p.titulo.replace(/\W+/g, "-");
++          return (
++            <article className={"card" + (isOpen ? " open" : "")} key={p.titulo}>
++              <button
++                className="card-head"
++                aria-expanded={isOpen}
++                aria-controls={id}
++                onClick={() => setOpen(isOpen ? null : p.titulo)}
++              >
++                <span className="card-meta">{p.tipo}</span>
++                {p.estado && <span className="card-status">{p.estado}</span>}
++                <span className="card-title">{p.titulo}</span>
++                <span className="chev" aria-hidden="true" />
++              </button>
++              <ul className="tags">
++                {p.tecnologias.map((t) => <li key={t}>{t}</li>)}
++              </ul>
++              <div className="card-body" id={id}>
++                <div className="card-inner">
++                  <p>{p.texto}</p>
++                  {p.enlace && (
++                    <a className="link" href={p.enlace}>{p.enlaceTexto ?? "Ver proyecto"}</a>
++                  )}
++                </div>
++              </div>
++            </article>
++          );
++        })}
++      </div>
++    </>
++  );
++}

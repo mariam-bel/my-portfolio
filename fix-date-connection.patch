@@ -1,0 +1,30 @@
+diff --git a/app/Portfolio.tsx b/app/Portfolio.tsx
+index 876fe5d..d74c087 100644
+--- a/app/Portfolio.tsx
++++ b/app/Portfolio.tsx
+@@ -1,7 +1,14 @@
++import { Suspense } from "react";
++import { connection } from "next/server";
+ import RouteMap from "./RouteMap";
+ import ProjectCards from "./ProjectCards";
+ import { projects } from "../data/projects";
+ 
++async function Year() {
++  await connection();
++  return <>{new Date().getFullYear()}</>;
++}
++
+ export default function Portfolio() {
+   return (
+     <div className="wrap">
+@@ -81,7 +88,9 @@ export default function Portfolio() {
+         </section>
+       </main>
+ 
+-      <footer>© {new Date().getFullYear()} Meriem B. El Boutrouki</footer>
++      <footer>
++        © <Suspense fallback={null}><Year /></Suspense> Meriem B. El Boutrouki
++      </footer>
+     </div>
+   );
+ }

@@ -1,6 +1,13 @@
+import { Suspense } from "react";
+import { connection } from "next/server";
 import RouteMap from "./RouteMap";
 import ProjectCards from "./ProjectCards";
 import { projects } from "../data/projects";
+
+async function Year() {
+  await connection();
+  return <>{new Date().getFullYear()}</>;
+}
 
 export default function Portfolio() {
   return (
@@ -63,7 +70,8 @@ export default function Portfolio() {
             <p className="when">Desarrolladora, prácticas y después en plantilla</p>
             <ul>
               <li>Rediseño de la web corporativa</li>
-              <li>Desarrollo del CRM GOMentis (Angular y Django)</li>
+              <li>Desarrollo del CRM interno (Angular y Django)</li>
+              <li>Aplicación de servicio técnico para mantenimientos e incidencias</li>
               <li>Automatización de tareas internas</li>
             </ul>
           </div>
@@ -80,7 +88,9 @@ export default function Portfolio() {
         </section>
       </main>
 
-      <footer>© {new Date().getFullYear()} Meriem B. El Boutrouki</footer>
+      <footer>
+        © <Suspense fallback={null}><Year /></Suspense> Meriem B. El Boutrouki
+      </footer>
     </div>
   );
 }

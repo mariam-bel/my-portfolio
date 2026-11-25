@@ -20,10 +20,17 @@ export const projects: Project[] = [
     enlaceTexto: "Ver en GitHub",
   },
   {
-    titulo: "CRM GOMentis",
+    titulo: "CRM",
     tipo: "Aplicación interna",
     estado: "En producción",
     texto: "CRM para el equipo comercial: ofertas, pedidos, visitas a clientes, informes y soporte.",
+    tecnologias: ["Angular", "Django", "Python"],
+  },
+  {
+    titulo: "Aplicación de servicio técnico",
+    tipo: "Aplicación interna",
+    estado: "En desarrollo",
+    texto: "Gestión de mantenimientos, reparaciones e incidencias vinculadas a cada pedido, con avisos para recontactar al cliente.",
     tecnologias: ["Angular", "Django", "Python"],
   },
   {

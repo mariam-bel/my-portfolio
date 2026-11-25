@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root{
   --paper:#eef2f4; --ink:#10202e; --muted:#4c5d6b; --line:#c4cfd6; --accent:#1a4fd6; --accent-ink:#fff;
   --head:"Bricolage Grotesque","Trebuchet MS",sans-serif;

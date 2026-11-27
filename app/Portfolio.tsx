@@ -42,7 +42,7 @@ export default function Portfolio() {
           <section id="inicio" className="relative pb-20 pt-36 lg:pt-44">
             <div className="relative">
               <h1 className="font-display text-6xl font-bold leading-[0.95] tracking-tight text-white sm:text-8xl lg:text-9xl">
-                Meriem<br />El Boutrouki
+                Meriem B.<br /> El Boutrouki
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300 sm:text-xl">
                 Desarrolladora multiplataforma. Hago aplicaciones que conectan datos con personas, con Angular, Django y Python.

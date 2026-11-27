@@ -1,230 +1,147 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { Plane, Mail, FileDown } from "lucide-react";
+import { Mail, FileDown } from "lucide-react";
 import { LinkedInIcon, GitHubIcon } from "@/components/ui/SocialIcons";
-import RouteMap from "./RouteMap";
+import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card-effect";
+import DeparturesBoard from "./DeparturesBoard";
 import ProjectCards from "./ProjectCards";
 import { projects } from "../data/projects";
+import { CompanyLogo } from "@/components/CompanyLogo";
 
 async function Year() {
   await connection();
   return <>{new Date().getFullYear()}</>;
 }
 
+const glass = "rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-xl";
+const h2 = "font-display text-4xl font-bold tracking-tight text-white sm:text-5xl";
+const section = "scroll-mt-24 py-20";
+
 export default function Portfolio() {
   return (
-      <div className="min-h-screen bg-[#eef2f4] text-[#10202e] selection:bg-blue-600 selection:text-white dark:bg-[#0b151e] dark:text-[#e8eef2]">
-        {/* Fondo sutil decorativo */}
-        <div
-            aria-hidden="true"
-            className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(26,79,214,0.14),transparent_45%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.10),transparent_40%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(126,163,255,0.16),transparent_45%),radial-gradient(circle_at_bottom_left,rgba(56,189,248,0.08),transparent_40%)]"
-        />
+    <div className="relative min-h-screen overflow-x-clip bg-[#050a12] text-slate-200">
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
+        <div className="bg-grid absolute inset-0" />
+        <div className="absolute -right-40 -top-40 h-[40rem] w-[40rem] rounded-full bg-sky-500/20 blur-[120px]" />
+        <div className="absolute -left-40 top-1/2 h-[34rem] w-[34rem] rounded-full bg-indigo-600/20 blur-[120px]" />
+      </div>
 
-        <div className="mx-auto max-w-6xl px-6">
-          <header className="sticky top-0 z-30 flex items-center justify-between border-b border-slate-900/10 bg-[#eef2f4]/80 py-4 backdrop-blur-md dark:border-white/10 dark:bg-[#0b151e]/80">
-            <a
-                className="font-bold tracking-tight text-slate-900 dark:text-white"
-                href="#inicio"
-            >
-              Meriem El Boutrouki
-            </a>
-            <nav aria-label="Principal" className="flex items-center gap-5 text-sm text-slate-600 dark:text-slate-300">
-              <a className="transition hover:text-blue-600 dark:hover:text-blue-400" href="#proyectos">
-                Proyectos
-              </a>
-              <a className="transition hover:text-blue-600 dark:hover:text-blue-400" href="#sobre-mi">
-                Sobre mí
-              </a>
-              <a className="transition hover:text-blue-600 dark:hover:text-blue-400" href="#experiencia">
-                Experiencia
-              </a>
-              <a className="transition hover:text-blue-600 dark:hover:text-blue-400" href="#contacto">
-                Contacto
-              </a>
-            </nav>
-          </header>
+      <header className="fixed left-1/2 top-4 z-30 w-[calc(100%-2rem)] max-w-3xl -translate-x-1/2">
+        <div className="flex items-center justify-between rounded-full border border-white/10 bg-slate-950/60 px-5 py-2.5 backdrop-blur-xl">
+          <a href="#inicio" className="font-display font-bold text-white">Meriem</a>
+          <nav aria-label="Principal" className="flex items-center gap-5 text-sm text-slate-300">
+            {[["Proyectos", "#proyectos"], ["Sobre mí", "#sobre-mi"], ["Experiencia", "#experiencia"], ["Contacto", "#contacto"]].map(([t, h]) => (
+              <a key={h} href={h} className="transition hover:text-sky-300">{t}</a>
+            ))}
+          </nav>
+        </div>
+      </header>
 
-          <main id="main">
-            {/* Hero */}
-            <section
-                id="inicio"
-                className="grid grid-cols-1 items-center gap-10 py-14 lg:grid-cols-12 lg:py-20"
-            >
-              <div className="lg:col-span-7">
-              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-600/20 bg-blue-600/10 px-3.5 py-1 text-xs font-semibold text-blue-700 dark:border-blue-400/25 dark:bg-blue-400/10 dark:text-blue-300">
-                <Plane className="h-3.5 w-3.5" />
-                DAM · Angular · Django · Python · Datos abiertos de vuelos
-              </span>
+      <div className="mx-auto max-w-7xl px-6">
+        <main id="main">
+          <section id="inicio" className="relative pb-20 pt-36 lg:pt-44">
+            <div className="relative">
+              <h1 className="font-display text-6xl font-bold leading-[0.95] tracking-tight text-white sm:text-8xl lg:text-9xl">
+                Meriem<br />El Boutrouki
+              </h1>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300 sm:text-xl">
+                Desarrolladora multiplataforma. Hago aplicaciones que conectan datos con personas, con Angular, Django y Python.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href="#proyectos" className="rounded-xl bg-sky-400 px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-sky-500/20 transition hover:-translate-y-0.5 hover:bg-sky-300">
+                  Ver proyectos
+                </a>
+                <a href="/cv/CV_Meriem_El_Boutrouki.pdf" className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white/10">
+                  <FileDown className="h-4 w-4" /> Descargar CV
+                </a>
+              </div>
+            </div>
+            <div className="relative mt-14">
+              <DeparturesBoard />
+            </div>
+          </section>
 
-                <h1 className="text-4xl font-extrabold tracking-tight text-slate-950 sm:text-6xl dark:text-white">
-                  Aplicaciones que{" "}
-                  <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 bg-clip-text text-transparent dark:from-blue-400 dark:via-indigo-300 dark:to-sky-300">
-                  conectan datos
-                </span>{" "}
-                  con personas.
-                </h1>
+          <section id="proyectos" className={section}>
+            <div className="mb-10 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <h2 className={h2}>Proyectos</h2>
+              <p className="max-w-sm text-sm text-slate-400">Mueve el cursor sobre cada tarjeta para explorar los detalles.</p>
+            </div>
+            <ProjectCards projects={projects} />
+          </section>
 
-                <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
-                  Soy desarrolladora de aplicaciones multiplataforma en Madrid. Trabajo con Angular,
-                  Django y Python, y construyo en mi tiempo libre un seguimiento de vuelos con datos abiertos.
+          <section id="sobre-mi" className={section}>
+            <h2 className={`${h2} mb-10`}>Sobre mí</h2>
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+              <div className="space-y-5 text-lg leading-relaxed text-slate-300">
+                <p>
+                  Estudio el ciclo superior de Desarrollo de Aplicaciones Multiplataforma en EPSUM y trabajo en Herascientific, donde empecé con las prácticas y me quedé: rediseñé la web corporativa, automaticé tareas y desarrollé módulos del CRM interno.
                 </p>
-
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <a
-                      className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-md shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700"
-                      href="#proyectos"
-                  >
-                    Ver proyectos
-                  </a>
-                  <a
-                      className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
-                      href="/cv/Meriem-El-Boutrouki-CV.pdf"
-                  >
-                    <FileDown className="h-4 w-4" />
-                    Descargar CV
-                  </a>
-                </div>
+                <p>Me interesa el sector aeronáutico, así que mi proyecto personal usa datos abiertos de vuelos.</p>
               </div>
+              <CardContainer containerClassName="w-full py-0" className="w-full">
+                <CardBody className={`w-full p-8 ${glass}`}>
+                  <dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    {[
+                      ["Ubicación", "Madrid, España"],
+                      ["Formación", "DAM, EPSUM (2024–2026)"],
+                      ["Idiomas", "Español y árabe nativos, inglés avanzado, francés básico"],
+                      ["Stack", "Angular, Django, Python, Flask, WooCommerce"],
+                    ].map(([k, v]) => (
+                      <CardItem key={k} translateZ={40} className="w-full">
+                        <dt className="text-sm text-slate-400">{k}</dt>
+                        <dd className="mt-1 font-medium text-white">{v}</dd>
+                      </CardItem>
+                    ))}
+                  </dl>
+                </CardBody>
+              </CardContainer>
+            </div>
+          </section>
 
-              <div className="rounded-2xl border border-slate-300/80 bg-white/75 p-4 shadow-sm backdrop-blur lg:col-span-5 dark:border-slate-800 dark:bg-slate-900/75">
-                <RouteMap />
-              </div>
-            </section>
-
-            {/* Proyectos (foco principal con tarjetas 3D) */}
-            <section id="proyectos" className="border-t border-slate-900/10 py-16 dark:border-white/10">
-              <div className="mb-8 flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400">
-                    Selección destacada
-                  </p>
-                  <h2 className="mt-1 text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
-                    Proyectos
-                  </h2>
-                </div>
-                <p className="max-w-md text-sm text-slate-600 dark:text-slate-400">
-                  Pasa el cursor sobre cada tarjeta para explorar la profundidad y los detalles técnicos.
-                </p>
-              </div>
-
-              <ProjectCards projects={projects} />
-            </section>
-
-            {/* Sobre mí */}
-            <section id="sobre-mi" className="border-t border-slate-900/10 py-16 dark:border-white/10">
-              <h2 className="mb-8 text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
-                Sobre mí
-              </h2>
-              <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                <div className="space-y-4 text-slate-700 dark:text-slate-300">
-                  <p className="leading-relaxed">
-                    Estudio el ciclo superior de Desarrollo de Aplicaciones Multiplataforma en EPSUM y
-                    trabajo en Herascientific, donde empecé con las prácticas y me quedé: rediseñé la web
-                    corporativa, automaticé tareas y desarrollé módulos del CRM interno.
-                  </p>
-                  <p className="leading-relaxed">
-                    Me interesa el sector aeronáutico, así que mi proyecto personal usa datos abiertos de vuelos.
-                  </p>
-                </div>
-
-                <dl className="grid grid-cols-1 gap-4 rounded-2xl border border-slate-300/80 bg-white/75 p-6 sm:grid-cols-2 dark:border-slate-800 dark:bg-slate-900/75">
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                      Ubicación
-                    </dt>
-                    <dd className="mt-1 text-sm font-medium">Madrid, España</dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                      Formación
-                    </dt>
-                    <dd className="mt-1 text-sm font-medium">DAM, EPSUM (2024–2026)</dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                      Idiomas
-                    </dt>
-                    <dd className="mt-1 text-sm font-medium">
-                      Español y árabe nativos, inglés avanzado, francés básico
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                      Stack
-                    </dt>
-                    <dd className="mt-1 text-sm font-medium">
-                      Angular, Django, Python, Flask, WooCommerce
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </section>
-
-            {/* Experiencia */}
-            <section id="experiencia" className="border-t border-slate-900/10 py-16 dark:border-white/10">
-              <h2 className="mb-8 text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
-                Experiencia
-              </h2>
-              <div className="rounded-2xl border border-slate-300/80 bg-white/75 p-6 dark:border-slate-800 dark:bg-slate-900/75">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="text-xl font-bold text-slate-950 dark:text-white">Herascientific</h3>
-                  <p className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                    Desarrolladora · prácticas y después en plantilla
-                  </p>
-                </div>
-                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700 dark:text-slate-300">
+          <section id="experiencia" className={section}>
+            <h2 className={`${h2} mb-10`}>Experiencia</h2>
+            <CardContainer containerClassName="w-full py-0" className="w-full">
+              <CardBody className={`w-full p-8 sm:p-10 ${glass}`}>
+                <CardItem translateZ={50} className="flex w-full flex-wrap items-center justify-between gap-3">
+                  <CompanyLogo name="Herascientific" className="h-9 w-9" />
+                  <p className="text-sm text-sky-300">Desarrolladora · prácticas y después en plantilla</p>
+                </CardItem>
+                <CardItem as="ul" translateZ={30} className="mt-6 grid w-full gap-3 text-base text-slate-300 sm:grid-cols-2">
                   <li>Rediseño de la web corporativa</li>
                   <li>Desarrollo del CRM interno (Angular y Django)</li>
                   <li>Aplicación de servicio técnico para mantenimientos e incidencias</li>
                   <li>Automatización de tareas internas</li>
-                </ul>
-              </div>
-            </section>
+                </CardItem>
+              </CardBody>
+            </CardContainer>
+          </section>
 
-            {/* Contacto */}
-            <section id="contacto" className="border-t border-slate-900/10 py-16 dark:border-white/10">
-              <div className="rounded-2xl border border-blue-600/20 bg-gradient-to-br from-blue-600/10 via-white/80 to-sky-500/10 p-8 dark:border-blue-400/20 dark:from-blue-500/10 dark:via-slate-900/85 dark:to-sky-400/10">
-                <h2 className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
-                  Contacto
-                </h2>
-                <p className="mt-2 max-w-xl text-slate-600 dark:text-slate-300">
-                  Estoy abierta a prácticas y ofertas como desarrolladora. Escríbeme o conecta conmigo en LinkedIn.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <a
-                      className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
-                      href="mailto:merimarabel@gmail.com"
-                  >
-                    <Mail className="h-4 w-4" />
-                    Escribirme
-                  </a>
-                  <a
-                      className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
-                      href="https://www.linkedin.com/in/meriem-belhadj-"
-                      target="_blank"
-                      rel="noreferrer"
-                  >
-                    <LinkedInIcon className="h-4 w-4"/>
-                    LinkedIn
-                  </a>
-                  <a
-                      className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
-                      href="https://github.com/mariam-bel"
-                      target="_blank"
-                      rel="noreferrer"
-                  >
-                    <GitHubIcon className="h-4 w-4" />
-                    GitHub
-                  </a>
-                </div>
+          <section id="contacto" className={section}>
+            <div className={`${glass} relative overflow-hidden p-8 sm:p-14`}>
+              <div aria-hidden="true" className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-sky-400/20 blur-[90px]" />
+              <h2 className={h2}>Hablemos</h2>
+              <p className="mt-4 max-w-xl text-lg text-slate-300">
+                Estoy abierta a prácticas y ofertas como desarrolladora. Escríbeme o conecta conmigo en LinkedIn.
+              </p>
+              <div className="relative mt-8 flex flex-wrap gap-3">
+                <a href="mailto:merimarabel@gmail.com" className="inline-flex items-center gap-2 rounded-xl bg-sky-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-300">
+                  <Mail className="h-4 w-4" /> Escribirme
+                </a>
+                <a href="https://www.linkedin.com/in/meriem-belhadj-" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                  <LinkedInIcon className="h-4 w-4" /> LinkedIn
+                </a>
+                <a href="https://github.com/mariam-bel" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                  <GitHubIcon className="h-4 w-4" /> GitHub
+                </a>
               </div>
-            </section>
-          </main>
+            </div>
+          </section>
+        </main>
 
-          <footer className="border-t border-slate-900/10 py-8 text-sm text-slate-500 dark:border-white/10 dark:text-slate-400">
-            © <Suspense fallback={null}><Year /></Suspense> Meriem B. El Boutrouki
-          </footer>
-        </div>
+        <footer className="border-t border-white/10 py-8 text-sm text-slate-400">
+          © <Suspense fallback={null}><Year /></Suspense> Meriem B. El Boutrouki
+        </footer>
       </div>
+    </div>
   );
 }

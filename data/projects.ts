@@ -1,50 +1,43 @@
-export type Project = {
-  titulo: string;
-  tipo: string;
-  estado?: string;
-  texto: string;
-  tecnologias: string[];
-  enlace?: string;
-  enlaceTexto?: string;
-};
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+  company?: string;
+  demoUrl?: string;
+  repoUrl?: string;
+}
 
-// Añade o edita proyectos aquí: se pintan solos en la página.
 export const projects: Project[] = [
   {
-    titulo: "Flight Tracker",
-    tipo: "Proyecto personal",
-    estado: "En desarrollo",
-    texto: "Seguimiento de vuelos en tiempo real con datos abiertos de OpenSky.",
-    tecnologias: ["OpenSky", "API REST"],
-    enlace: "https://github.com/TU_USUARIO/flight-tracker",
-    enlaceTexto: "Ver en GitHub",
+    id: "open-flight-tracker",
+    title: "Seguimiento de vuelos con datos abiertos",
+    description:
+        "Aplicación para consultar y visualizar rutas, estados y trayectorias aéreas a partir de fuentes de datos abiertos.",
+    image:
+        "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80",
+    tags: ["Python", "Datos abiertos", "Aviación"],
+    repoUrl: "https://github.com/mariam-bel",
   },
   {
-    titulo: "CRM",
-    tipo: "Aplicación interna",
-    estado: "En producción",
-    texto: "CRM para el equipo comercial: ofertas, pedidos, visitas a clientes, informes y soporte.",
-    tecnologias: ["Angular", "Django", "Python"],
+    id: "herascientific-crm",
+    title: "CRM interno y automatización",
+    description:
+        "Módulos del CRM interno y automatización de tareas operativas desarrollados con Angular, Django y Python.",
+    image:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+    tags: ["Angular", "Django", "Python"],
+    company: "Herascientific",
   },
   {
-    titulo: "Aplicación de servicio técnico",
-    tipo: "Aplicación interna",
-    estado: "En desarrollo",
-    texto: "Gestión de mantenimientos, reparaciones e incidencias vinculadas a cada pedido, con avisos para recontactar al cliente.",
-    tecnologias: ["Angular", "Django", "Python"],
-  },
-  {
-    titulo: "Web corporativa de Herascientific",
-    tipo: "Web corporativa",
-    estado: "Publicado",
-    texto: "Rediseño de la web de la empresa con una estructura más clara y mejor experiencia de usuario.",
-    tecnologias: ["WordPress", "WooCommerce"],
-  },
-  {
-    titulo: "Sincronizador Excel y WooCommerce",
-    tipo: "Automatización",
-    estado: "En desarrollo",
-    texto: "Herramienta que mantiene el catálogo de la tienda online sincronizado desde un Excel maestro.",
-    tecnologias: ["Python", "Flask", "WooCommerce"],
+    id: "technical-service-app",
+    title: "Aplicación de servicio técnico",
+    description:
+        "Gestión de mantenimientos preventivos, incidencias y partes de asistencia técnica en planta y laboratorio.",
+    image:
+        "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1200&q=80",
+    tags: ["Angular", "Django", "Incidencias"],
+    company: "Herascientific",
   },
 ];

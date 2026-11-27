@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { Plane, Mail, FileDown } from "lucide-react";
-import { LinkedInIcon, GitHubIcon } from "@/components/SocialIcons";
+import { LinkedInIcon, GitHubIcon } from "@/components/ui/SocialIcons";
 import RouteMap from "./RouteMap";
 import ProjectCards from "./ProjectCards";
 import { projects } from "../data/projects";
